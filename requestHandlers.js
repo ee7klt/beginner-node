@@ -7,10 +7,12 @@
 // 29 Aug 2013: added child_process
 // 29 Aug 2013: push server to content (instaed of the other way round)
 // 1st Sept 2013: remove exec, add var body for handling POST requests
+// accept postData as parameter for both start() and upload()
+// display postData on upload()
 
 var exec = require("child_process").exec;
 
-function start(response) {
+function start(response, postData) {
 	console.log("Request handler 'start' was called.");
 
 
@@ -44,10 +46,10 @@ function start(response) {
   
 }
 
-function upload(response) {
+function upload(response, postData) {
 	console.log("Request hander 'upload' was called.");
 	response.writeHead(200, {"Content-Type": "text/plain"});
-	response.write("Hello Upload");
+	response.write("You've sent: " + postData);
 	response.end();
 	//return "Hello Upload";
 }
