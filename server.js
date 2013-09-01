@@ -2,16 +2,31 @@
 // HTTP server module
 // 28 Aug 2013: route() now returns string. assign it to variable -- how not to do it
 // 29 Aug 2913: push server to content (instaed of the other way round)
+// 1st Sept 2013: add data and end events to collect POST data.
 
 var http = require("http");
 var url = require("url");
 
 function start(route, handle) {
 	function onRequest(request, response) {
+
+
+		var postData = "";
 		var pathname = url.parse(request.url).pathname;
 		console.log("Request for " + pathname + " received.");
 
-		route(handle, pathname, response);
+		request.setEncoding("utf8");
+
+		request.addListener("data", function(postDataChunk) {
+			postData += postDataChunk;
+			console.log("Received POST data chunk '" + postDataChunk + "'.");
+		});
+
+		request.addListener("end", function() {
+			route(handle, pathname, response, postData);
+		}) 
+
+		// route(handle, pathname, response);
 
 		//instead of expecting return value, pass in a third parameter, response object
 		//var content = route(handle,pathname);
