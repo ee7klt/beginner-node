@@ -6,21 +6,41 @@
 // 29 Aug 2013: added sleep() - blocking
 // 29 Aug 2013: added child_process
 // 29 Aug 2013: push server to content (instaed of the other way round)
+// 1st Sept 2013: remove exec, add var body for handling POST requests
 
 var exec = require("child_process").exec;
 
 function start(response) {
 	console.log("Request handler 'start' was called.");
+
+
 	//var content = "empty";
 
-	exec("ls -lah", function(error, stdout, stderr) {          // now upload is not blocked.
-	//	content = stdout;
-		response.writeHead(200, {"Content-Type": "text/plain"});
-		response.write(stdout);
-		response.end();
-	});
+	var body = '<html>' +
+				'<head>' +
+				'<meta http-equiv="Content-Type" content="text/html; ' +
+				'charset=UTF-8" />' +
+				'</head>' +
+				'<body>' +
+				'<form action="/upload" method="post">' +
+				'<textarea name="text" rows="20" cols="60"></textarea>' +
+				'<input type="submit" value="Submit text" />' +
+				'</form>'+
+				'</body>'+
+				'</html>';
+
+	// exec("ls -lah", function(error, stdout, stderr) {          // now upload is not blocked.
+	// //	content = stdout;
+	// 	response.writeHead(200, {"Content-Type": "text/plain"});
+	// 	response.write(stdout);
+	// 	response.end();
+	// });
 
 	//return content;
+
+	response.writeHead(200, {"Content-Type": "text/html"});
+	response.write(body);
+	response.end();
   
 }
 
