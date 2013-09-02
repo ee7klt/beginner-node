@@ -11,8 +11,11 @@
 // display postData on upload()
 // added querystring to parse text field of postData
 
+//server local file to requesting browser using fs module in show()
+
 //var exec = require("child_process").exec;
 var querystring = require("querystring");
+	fs = require("fs");
 
 function start(response, postData) {
 	console.log("Request handler 'start' was called.");
@@ -28,6 +31,8 @@ function start(response, postData) {
 				'<body>' +
 				'<form action="/upload" method="post">' +
 				'<textarea name="text" rows="20" cols="60"></textarea>' +
+				'<textarea name="name" rows="20" cols="60"></textarea>' +
+				'<textarea name="email" rows="20" cols="60"></textarea>' +
 				'<input type="submit" value="Submit text" />' +
 				'</form>'+
 				'</body>'+
@@ -56,5 +61,22 @@ function upload(response, postData) {
 	//return "Hello Upload";
 }
 
+function show(response, postData) {
+	console.log("Request handler 'show' was called.");
+	fs.readFile("/tmp/test.png", "binary", function(error, file) {
+		if (error) {
+			response.writeHead(500, {"Content-Type": "text/plain"});
+			response.write(error + "\n");
+			response.end();
+		} else {
+			response.writeHead(200, {"Content-Type": "image/png"});
+			response.write(file, "binary");
+			response.end();
+		}
+	});
+}
+
+
 exports.start = start;
 exports.upload = upload;
+exports.show = show;
