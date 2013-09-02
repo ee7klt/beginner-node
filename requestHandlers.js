@@ -9,8 +9,10 @@
 // 1st Sept 2013: remove exec, add var body for handling POST requests
 // accept postData as parameter for both start() and upload()
 // display postData on upload()
+// added querystring to parse text field of postData
 
-var exec = require("child_process").exec;
+//var exec = require("child_process").exec;
+var querystring = require("querystring");
 
 function start(response, postData) {
 	console.log("Request handler 'start' was called.");
@@ -49,7 +51,7 @@ function start(response, postData) {
 function upload(response, postData) {
 	console.log("Request hander 'upload' was called.");
 	response.writeHead(200, {"Content-Type": "text/plain"});
-	response.write("You've sent: " + postData);
+	response.write("You've sent: " + querystring.parse(postData).text);
 	response.end();
 	//return "Hello Upload";
 }
