@@ -33,7 +33,7 @@ function start(response) {
 				'</head>' +
 				'<body>' +
 				'<form action="/upload" enctype="multipart/form-data" method="post">' +
-				'<input type="file" value="upload" />' +
+				'<input type="file" name="upload" multiple="multiple" />' +
 				'<input type="submit" value="Upload file" />' +
 				'</form>'+
 				'</body>'+
@@ -51,9 +51,11 @@ function upload(response, request) {
 
 	var form = new formidable.IncomingForm();
 	console.log("about to parse");
+	console.dir(request.headers);
 
-	form.parse(request, function(error, fields,files) {
+	form.parse(request, function(error, fields, files) {
 		console.log("parsing done");
+		console.dir(files);
 
 
 		fs.rename(files.upload.path, "/tmp/test.png", function (error) {
