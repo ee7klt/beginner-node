@@ -56,16 +56,17 @@ function upload(response, request) {
 		console.log("parsing done");
 
 
-	fs.rename(files.upload.path, "/tmp/test.png", function (error) {
-		if (error) {
-			fs.unlink("/tmp/test.png");
-			fs.rename(files.upload.path, "tmp/test.png");
-		}
-	});
-	response.writeHead(200, {"Content-Type": "text/html"});
-	response.write("received image: <br/>");
-	response.write("<img src='/show' />");
-	response.end();
+		fs.rename(files.upload.path, "/tmp/test.png", function (error) {
+			if (error) {
+				console.log("upload error");
+				fs.unlink("/tmp/test.png");
+				fs.rename(files.upload.path, "tmp/test.png");
+			}
+		});
+		response.writeHead(200, {"Content-Type": "text/html"});
+		response.write("received image: <br/>");
+		response.write("<img src='/show' />");
+		response.end();
 	});
 }
 
