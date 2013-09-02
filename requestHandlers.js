@@ -10,10 +10,12 @@
 // accept postData as parameter for both start() and upload()
 // display postData on upload()
 // added querystring to parse text field of postData
+// added show() to read image
+// change html to allow upload
 
 //server local file to requesting browser using fs module in show()
 
-//var exec = require("child_process").exec;
+
 var querystring = require("querystring");
 	fs = require("fs");
 
@@ -21,7 +23,7 @@ function start(response, postData) {
 	console.log("Request handler 'start' was called.");
 
 
-	//var content = "empty";
+
 
 	var body = '<html>' +
 				'<head>' +
@@ -29,23 +31,13 @@ function start(response, postData) {
 				'charset=UTF-8" />' +
 				'</head>' +
 				'<body>' +
-				'<form action="/upload" method="post">' +
-				'<textarea name="text" rows="20" cols="60"></textarea>' +
-				'<textarea name="name" rows="20" cols="60"></textarea>' +
-				'<textarea name="email" rows="20" cols="60"></textarea>' +
-				'<input type="submit" value="Submit text" />' +
+				'<form action="/upload" enctype="multipart/form-data" method="post">' +
+				'<input type="file" value="upload" />' +
+				'<input type="submit" value="Upload file" />' +
 				'</form>'+
 				'</body>'+
 				'</html>';
 
-	// exec("ls -lah", function(error, stdout, stderr) {          // now upload is not blocked.
-	// //	content = stdout;
-	// 	response.writeHead(200, {"Content-Type": "text/plain"});
-	// 	response.write(stdout);
-	// 	response.end();
-	// });
-
-	//return content;
 
 	response.writeHead(200, {"Content-Type": "text/html"});
 	response.write(body);
@@ -63,7 +55,7 @@ function upload(response, postData) {
 
 function show(response, postData) {
 	console.log("Request handler 'show' was called.");
-	fs.readFile("/tmp/test.png", "binary", function(error, file) {
+	fs.readFile("tmp/test.png", "binary", function(error, file) {
 		if (error) {
 			response.writeHead(500, {"Content-Type": "text/plain"});
 			response.write(error + "\n");

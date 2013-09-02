@@ -1,6 +1,8 @@
 //index.js
 //main bootstrap. starts server
 
+//map to show()
+
 var server = require("./server");
 var router = require("./router");
 var requestHandlers = require("./requestHandlers");

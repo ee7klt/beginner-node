@@ -4,6 +4,8 @@
 // 29 Aug 2913: push server to content (instaed of the other way round)
 // 1st Sept 2013: add data and end events to collect POST data.
 
+//remove postData handling, pass request to route
+
 var http = require("http");
 var url = require("url");
 
@@ -15,26 +17,8 @@ function start(route, handle) {
 		var pathname = url.parse(request.url).pathname;
 		console.log("Request for " + pathname + " received.");
 
-		request.setEncoding("utf8");
+		route(handle, pathname, response, request);
 
-		request.addListener("data", function(postDataChunk) {
-			postData += postDataChunk;
-			console.log("Received POST data chunk '" + postDataChunk + "'.");
-		});
-
-		request.addListener("end", function() {
-			route(handle, pathname, response, postData);
-		}) 
-
-		// route(handle, pathname, response);
-
-		//instead of expecting return value, pass in a third parameter, response object
-		//var content = route(handle,pathname);
-		
-		//remove response methods because now because route will handle that
-		//response.writeHead(200, {"Content-Type": "text/plain"});
-		//response.write(content);    // replaced "hello world" with content
-		//response.end();
 	}
 
 	http.createServer(onRequest).listen(8888);
